@@ -1,5 +1,10 @@
 import 'package:withings_flutter/src/data/withingsData.dart';
 import 'package:pretty_json/pretty_json.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// [WithingsSleepGetData] is a class that returns sleep data captured at high frequency, including sleep stages
 class WithingsSleepGetData implements WithingsData {
@@ -13,8 +18,8 @@ class WithingsSleepGetData implements WithingsData {
   WithingsSleepGetData({this.status, this.series});
 
   WithingsSleepGetData.fromJson(Map<String, dynamic> json) {
-    print(prettyJson(json, indent: 2));
-
+    final json2write = JsonStorage();
+    json2write.writeJson(prettyJson(json));
     status = json['status'];
     if (json['status'] == 0 && json['body'] != null) {
       if (json['body']['series'].isNotEmpty) {
@@ -33,6 +38,25 @@ class WithingsSleepGetData implements WithingsData {
           ..write('series: $series, ')
           ..write(')'))
         .toString();
+  }
+}
+
+class JsonStorage {
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/json.txt');
+  }
+
+  Future<File> writeJson(String json) async {
+    final file = await _localFile;
+
+    // Write the file
+    return file.writeAsString(json);
   }
 }
 
