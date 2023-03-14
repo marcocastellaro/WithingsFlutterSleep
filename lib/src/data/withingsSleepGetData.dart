@@ -1,6 +1,6 @@
 import 'package:withings_flutter/src/data/withingsData.dart';
 import 'package:pretty_json/pretty_json.dart';
-
+import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 /// [WithingsSleepGetData] is a class that returns sleep data captured at high frequency, including sleep stages
