@@ -12,6 +12,7 @@ class WithingsSleepGetData implements WithingsData {
   WithingsSleepGetData({this.status, this.series});
 
   WithingsSleepGetData.fromJson(Map<String, dynamic> json) {
+    print(json);
     status = json['status'];
     if (json['status'] == 0 && json['body'] != null) {
       if (json['body']['series'].isNotEmpty) {
